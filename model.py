@@ -2,11 +2,16 @@ import numpy as np
 from consts import WIDTH, HEIGHT
 
 class Model():
-    def __init__(self, rule: np.uint8):
+    def __init__(self, default_rule):
+        self.set_up(default_rule)
+        
+    def set_up(self, rule: np.uint8):
+        self.reset_grid()
+        self.rule = np.unpackbits(np.array([rule], dtype= np.uint8))[::-1]
+
+    def reset_grid(self):
         self.create_grid()
         self.line_num = 0
-        self.rule = np.unpackbits(np.array([rule], dtype= np.uint8))[::-1]
-        print(self.rule)
         self.randomize_line()
 
     def create_grid(self):

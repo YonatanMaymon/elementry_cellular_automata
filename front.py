@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider, Button
 import numpy as np
 from model import Model
 from consts import HEIGHT, WIDTH
@@ -24,21 +25,36 @@ class Front:
         ax.set_xticklabels([])
         ax.set_yticklabels([])
         # Overlay Agent marker on top
-        # ax.legend(loc='upper right')
-        plt.title("2D Matrix Board")
+        
+        # 2. Create the Slider Axis & Widget
+        ax_slider = plt.axes([0.18, 0.05, 0.6, 0.04])
+        self.rule_slider = Slider(
+            ax=ax_slider,
+            label='SELECT INT:',
+            valmin=0,
+            valmax=255,
+            valinit=110,
+            valstep=1, 
+            color='royalblue'
+        )
+        ax_button = plt.axes([0.85, 0.05, 0.1, 0.04])
+        self.start_button = Button(ax_button, 'Start', color='lightgoldenrodyellow', hovercolor='0.975')
+        self.start_button.on_clicked(self.start)
         plt.ion()
         plt.show()
 
         fig.canvas.mpl_connect('close_event', self.handle_close)
         self.is_open = True
 
+    def get_rule(self):
+        return int(self.rule_slider.val)
+
+    def start(self, event):
+        self.model.set_up(self.get_rule())
+
     def step(self):
         self.image.set_data(self.model.grid)
         plt.pause(FRAME_DELAY)
-
-    def show(self):
-        plt.ioff()
-        plt.show()
 
     def handle_close(self, event):
         self.is_open = False
