@@ -1,0 +1,3 @@
+
+WIDTH = 50
+HEIGHT = 50
