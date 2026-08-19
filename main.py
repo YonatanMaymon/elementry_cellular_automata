@@ -1,6 +1,5 @@
 from model import Model
 from front import Front
-import time
 
 model = Model(110)
 front = Front(model)
